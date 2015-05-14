@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="qrcode.js"></script>
+    <title></title>
+</head>
+<body>
+<canvas id="myCanvas"></canvas>
+<div id="qrcode"></div>
+<input type="text" id="url" />
+<button onclick="make_qrcode();">ok</button>
+<button onclick="set_bg();">set bg</button>
+<script>
+    var wh=128;
+
+    var mw=900;
+    var mh=500;
+    var qrcode_src="";
+
+    function make_qrcode(){
+        var t=document.getElementById("url").value;
+        var qrcode = new QRCode("qrcode", {
+            text: t,
+            width: wh,
+            height: wh,
+            colorDark : "#000",
+            colorLight : "#fff",
+            correctLevel : QRCode.CorrectLevel.H
+        },function(src){
+            console.log(src);
+            //
+            qrcode_src=src;
+            //
+        });
+    }
+
+    var canvas=document.getElementById('myCanvas');
+    var c=canvas.getContext('2d');
+    c.fillStyle='#FF0000';
+    c.fillRect(0,0,640,960);
+
+    function set_bg(){
+        canvas.width=mw;
+        canvas.height=mh;
+        var bg=new Image();
+        bg.src="images/2.jpg";
+        c.drawImage(bg,0,0,mw,mh);
+
+        var img=new Image();
+        img.src=qrcode_src;
+        c.drawImage(img,0,0,wh,wh);
+    }
+
+
+</script>
+</body>
+</html>
